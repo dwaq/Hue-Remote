@@ -1,69 +1,74 @@
+#include <WiFiClient.h>
 #include <ESP8266WiFi.h>
-#include <restclient.h>
-#include "wifi.h"
+#include <ESPHue.h>
+#include <Button.h>
+#include "WiFi.h"
 
-// Global variables
-#define ESP8266_BTN 16 // D0
+WiFiClient client;
+ESPHue myHue = ESPHue(client, "29ocf3mMaJ1XAtbqeKM60A4dFen9tSc96u1JuQAi", "philips-hue", 80);
 
-// Hue Configuration
-const char HUE_IP[] = "philips-hue";
-const  int HUE_PORT = 80;
-restclient hue(HUE_IP,HUE_PORT);
+Button button(5); // D1
 
-const char LIGHTS_ON[] = "{\"on\":true}";
-const char LIGHTS_OFF[] = "{\"on\":false}";
-
-// App Configuration
-bool btn = false;
-int duration = 0;
-int button_press = 0;
-
-void blinkLED(int dlay, int count = 1)
+// modified version of ESPHue::getGroupState()
+// instead of returning state of "on",
+// it returns the state of "any_on"
+// I want this because I want to toggle the lights off if any of them are on
+int getGroupAnyOn(byte groupNum)
 {
-  for (int c=0; c < count; c++) {
-    delay(dlay);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(dlay);
-    digitalWrite(LED_BUILTIN, LOW);
-  }
+    int groupState = 0;
+    String response = myHue.getGroupInfo(groupNum);
+
+    if (response.indexOf("\"any_on\":false") != -1)
+    {
+      groupState = 0;
+    }
+    if (response.indexOf("\"any_on\":true") != -1)
+    {
+      groupState = 1;
+    }
+    return groupState;
 }
 
-void setup()
-{
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(ESP8266_BTN, INPUT_PULLUP);
-  // Set WiFi mode to station (client)
-  WiFi.mode(WIFI_STA);
+void setup() {
+  button.begin();
+  
+  Serial.begin(115200);
+  Serial.println();
+  Serial.print("Connecting to ");
+  Serial.println(ssid);
+  
+  WiFi.begin(ssid, password);
+  
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
 
-  // Initiate connection with SSID and PSK
-  WiFi.begin(WIFI_SSID, WIFI_PSK);
-
-  // Blink LED while we wait for WiFi connection
-  while (WiFi.status() != WL_CONNECTED) blinkLED(100);
-  if (WiFi.status() != WL_CONNECTED) while(1) blinkLED(1000);
+  Serial.println("");
+  Serial.println("WiFi connected");  
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());  
 }
 
-void loop()
-{
-  btn = (digitalRead(ESP8266_BTN) == LOW);
-  duration = 1;
-  button_press = 0;
-  analogWrite(LED_BUILTIN, 0);
+void loop() {
+  if (button.read() == Button::PRESSED)
+  {
+    Serial.println("Button Pressed, group state is");
 
-  while (btn) {
-    analogWrite(LED_BUILTIN, duration * 100);
-    if (btn) button_press = 1;
-    duration = (duration > 9) ? 10 : ++duration;
-    btn = (digitalRead(ESP8266_BTN) == LOW);
-    delay(75);
-  }
+    int groupState = myHue.getGroupState(1);
+    Serial.print(groupState);
 
-  if (1 < duration && duration < 10) { // short press
-    if (button_press == 1)
-      hue.put("/api/29ocf3mMaJ1XAtbqeKM60A4dFen9tSc96u1JuQAi/groups/1/action",LIGHTS_OFF);  // All off
-  }
-  else if (duration >= 10) { // long press
-    if (button_press == 1)
-      hue.put("/api/29ocf3mMaJ1XAtbqeKM60A4dFen9tSc96u1JuQAi/groups/1/action",LIGHTS_ON);  // All on
+    // if on,
+    if (groupState == 1){
+      // turn off
+      myHue.setGroupPower(1, myHue.OFF);
+      Serial.println("off");
+    }
+    // if off,
+    else {
+      //turn on
+      myHue.setGroupPower(1, myHue.ON);
+      Serial.println("on");
+    }
   }
 }
