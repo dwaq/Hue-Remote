@@ -9,6 +9,10 @@ ESPHue myHue = ESPHue(client, "29ocf3mMaJ1XAtbqeKM60A4dFen9tSc96u1JuQAi", "phili
 
 Button button(5); // D1
 
+#define R_led 4   // D2
+#define G_led 0   // D3
+#define B_led 2   // D4
+
 // modified version of ESPHue::getGroupState()
 // instead of returning state of "on",
 // it returns the state of "any_on"
@@ -29,13 +33,34 @@ int getGroupAnyOn(byte groupNum)
     return groupState;
 }
 
+void fadeGreenOff(void)
+{
+  int brightness = 255;
+
+  while (brightness >= 0)
+  {
+    //Serial.println(brightness);
+    analogWrite(G_led, brightness);
+    brightness -= 5;
+    delay(20);
+  }
+}
+
 void setup() {
+
+  pinMode(R_led, OUTPUT);
+  pinMode(G_led, OUTPUT);
+  pinMode(B_led, OUTPUT);
+  
   button.begin();
   
   Serial.begin(115200);
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
+
+  // start connecting
+  digitalWrite(R_led, HIGH);
   
   WiFi.begin(ssid, password);
   
@@ -48,12 +73,18 @@ void setup() {
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());  
+
+  // connected
+  digitalWrite(R_led, LOW);
 }
 
 void loop() {
   if (button.read() == Button::PRESSED)
   {
     Serial.println("Button Pressed, group state is");
+    // turn green LED on since button was pressed
+    analogWrite(G_led, 255);
+    
 
     int groupState = myHue.getGroupState(1);
     Serial.print(groupState);
@@ -70,5 +101,8 @@ void loop() {
       myHue.setGroupPower(1, myHue.ON);
       Serial.println("on");
     }
+
+    // fade it off
+    fadeGreenOff();
   }
 }
