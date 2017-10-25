@@ -54,10 +54,10 @@ void setup() {
   
   button.begin();
   
-  Serial.begin(115200);
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  //Serial.begin(115200);
+  //Serial.println();
+  //Serial.print("Connecting to ");
+  //Serial.println(ssid);
 
   // start connecting
   digitalWrite(R_led, HIGH);
@@ -66,13 +66,13 @@ void setup() {
   
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    //Serial.print(".");
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected");  
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+  //Serial.println("");
+  //Serial.println("WiFi connected");  
+  //Serial.println("IP address: ");
+  //Serial.println(WiFi.localIP());
 
   // connected
   digitalWrite(R_led, LOW);
@@ -84,22 +84,22 @@ void loop() {
     // turn green LED on since button was pressed
     analogWrite(G_led, 255);
     
-    Serial.print("Button Pressed, group state is ");
+    //Serial.print("Button Pressed, group state is ");
 
     int groupState = myHue.getGroupState(1);
-    Serial.print(groupState);
+    //Serial.print(groupState);
 
     // if on,
     if (groupState == 1){
       // turn off
       myHue.setGroupPower(1, myHue.OFF);
-      Serial.println("... off");
+      //Serial.println("... off");
     }
     // if off,
     else {
       //turn on
       myHue.setGroupPower(1, myHue.ON);
-      Serial.println("... on");
+      //Serial.println("... on");
     }
 
     // fade it off
