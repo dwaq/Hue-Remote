@@ -1,6 +1,6 @@
 #include <WiFiClient.h>
 #include <ESP8266WiFi.h>
-#include <ESPHue.h>
+#include <ESPHue.h> 
 #include <Button.h>
 #include "WiFi.h"
 
@@ -72,7 +72,7 @@ void setup() {
   Serial.println("");
   Serial.println("WiFi connected");  
   Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());  
+  Serial.println(WiFi.localIP());
 
   // connected
   digitalWrite(R_led, LOW);
@@ -81,10 +81,10 @@ void setup() {
 void loop() {
   if (button.read() == Button::PRESSED)
   {
-    Serial.println("Button Pressed, group state is");
     // turn green LED on since button was pressed
     analogWrite(G_led, 255);
     
+    Serial.print("Button Pressed, group state is ");
 
     int groupState = myHue.getGroupState(1);
     Serial.print(groupState);
@@ -93,13 +93,13 @@ void loop() {
     if (groupState == 1){
       // turn off
       myHue.setGroupPower(1, myHue.OFF);
-      Serial.println("off");
+      Serial.println("... off");
     }
     // if off,
     else {
       //turn on
       myHue.setGroupPower(1, myHue.ON);
-      Serial.println("on");
+      Serial.println("... on");
     }
 
     // fade it off
