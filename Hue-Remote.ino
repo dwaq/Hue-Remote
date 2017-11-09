@@ -61,10 +61,10 @@ void setup()
     button.begin();
 
     // Start the Serial communication
-    Serial.begin(115200);
-    Serial.println();
-    Serial.print("Connecting to ");
-    Serial.println(SSID);
+    //Serial.begin(115200);
+    //Serial.println();
+    //Serial.print("Connecting to ");
+    //Serial.println(SSID);
 
     // signify that we're starting to connect to WiFi
     digitalWrite(R_led, HIGH);
@@ -76,14 +76,14 @@ void setup()
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(500);
-        Serial.print(".");
+        //Serial.print(".");
     }
 
     // print connection status and IP address
-    Serial.println("");
-    Serial.println("WiFi connected");
-    Serial.println("IP address: ");
-    Serial.println(WiFi.localIP());
+    //Serial.println("");
+    //Serial.println("WiFi connected");
+    //Serial.println("IP address: ");
+    //Serial.println(WiFi.localIP());
 
     // Connected to WiFi; turn off red LED
     digitalWrite(R_led, LOW);
@@ -97,26 +97,26 @@ void loop()
         // turn green LED on
         analogWrite(G_led, 255);
 
-        Serial.print("Button Pressed, group state is ");
+        //Serial.print("Button Pressed, group state is ");
 
         // my bulbs are on group 1
         // get their status
         int groupState = myHue.getGroupState(1);
-        Serial.print(groupState);
+        //Serial.print(groupState);
 
         // if on,
         if (groupState == 1)
         {
             // turn off
             myHue.setGroupPower(1, myHue.OFF);
-            Serial.println("... off");
+            //Serial.println("... off");
         }
         // if off,
         else
         {
             //turn on
             myHue.setGroupPower(1, myHue.ON);
-            Serial.println("... on");
+            //Serial.println("... on");
         }
 
         // Lights switched, fade the green LED off
@@ -132,9 +132,9 @@ void loop()
         while (WiFi.begin(SSID, PASSWORD) != WL_CONNECTED)
         {
             // unsuccessful, retry in 4 seconds
-            Serial.print("failed ... ");
+            //Serial.print("failed ... ");
             delay(4000);
-            Serial.print("retrying ... ");
+            //Serial.print("retrying ... ");
             // could try ESP.reset(); if it doesn't reconnect after a few loops
         }
 
