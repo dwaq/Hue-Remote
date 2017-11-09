@@ -122,5 +122,22 @@ void loop()
         // Lights switched, fade the green LED off
         fadeGreenOff();
     }
-}
 
+    // if WiFi disconnects...
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        // red LED on
+        digitalWrite(R_led, HIGH);
+
+        while (WiFi.begin(SSID, PASSWORD) != WL_CONNECTED)
+        {
+            // unsuccessful, retry in 4 seconds
+            Serial.print("failed ... ");
+            delay(4000);
+            Serial.print("retrying ... ");
+        }
+
+        // red LED off
+        digitalWrite(R_led, LOW);
+    }
+}
