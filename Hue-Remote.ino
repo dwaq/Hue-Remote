@@ -1,10 +1,12 @@
 #include <WiFiClient.h>
 #include <ESPHue.h> 
 #include <Button.h>
-#include "WiFi.h"
+// WiFi and Hue settings:
+// (refer to credentials-example.h for assistance)
+#include "credentials.h"
 
 WiFiClient client;
-ESPHue myHue = ESPHue(client, "29ocf3mMaJ1XAtbqeKM60A4dFen9tSc96u1JuQAi", "philips-hue", 80);
+ESPHue myHue = ESPHue(client, HUE_API_KEY, HUE_HOST, 80);
 
 Button button(5); // D1
 
@@ -56,13 +58,13 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   Serial.print("Connecting to ");
-  Serial.println(ssid);
+  Serial.println(SSID);
 
   // start connecting
   digitalWrite(R_led, HIGH);
   
-  WiFi.begin(ssid, password);
   
+  WiFi.begin(SSID, PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
