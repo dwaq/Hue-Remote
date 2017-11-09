@@ -50,7 +50,8 @@ void fadeGreenOff(void)
     }
 }
 
-void setup() {
+void setup()
+{
     // set LEDs are outputs
     pinMode(R_led, OUTPUT);
     pinMode(G_led, OUTPUT);
@@ -72,7 +73,8 @@ void setup() {
     WiFi.begin(SSID, PASSWORD);
 
     // wait until we're connected
-    while (WiFi.status() != WL_CONNECTED) {
+    while (WiFi.status() != WL_CONNECTED)
+    {
         delay(500);
         Serial.print(".");
     }
@@ -87,7 +89,8 @@ void setup() {
     digitalWrite(R_led, LOW);
 }
 
-void loop() {
+void loop()
+{
     // when button is pressed...
     if (button.read() == Button::PRESSED)
     {
@@ -102,13 +105,15 @@ void loop() {
         Serial.print(groupState);
 
         // if on,
-        if (groupState == 1){
+        if (groupState == 1)
+        {
             // turn off
             myHue.setGroupPower(1, myHue.OFF);
             Serial.println("... off");
         }
         // if off,
-        else {
+        else
+        {
             //turn on
             myHue.setGroupPower(1, myHue.ON);
             Serial.println("... on");
@@ -118,3 +123,4 @@ void loop() {
         fadeGreenOff();
     }
 }
+
