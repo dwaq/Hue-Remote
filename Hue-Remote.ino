@@ -1,5 +1,5 @@
 #include <WiFiClient.h>
-#include <ESPHue.h> 
+#include <ESPHue.h>
 #include <Button.h>
 // WiFi and Hue settings:
 // (refer to credentials-example.h for assistance)
@@ -52,9 +52,9 @@ void setup() {
   pinMode(R_led, OUTPUT);
   pinMode(G_led, OUTPUT);
   pinMode(B_led, OUTPUT);
-  
+
   button.begin();
-  
+
   Serial.begin(115200);
   Serial.println();
   Serial.print("Connecting to ");
@@ -62,16 +62,16 @@ void setup() {
 
   // start connecting
   digitalWrite(R_led, HIGH);
-  
-  
+
   WiFi.begin(SSID, PASSWORD);
+
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
 
   Serial.println("");
-  Serial.println("WiFi connected");  
+  Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
@@ -84,7 +84,7 @@ void loop() {
   {
     // turn green LED on since button was pressed
     analogWrite(G_led, 255);
-    
+
     Serial.print("Button Pressed, group state is ");
 
     int groupState = myHue.getGroupState(1);
