@@ -5,9 +5,11 @@
 // (refer to credentials-example.h for assistance)
 #include "credentials.h"
 
+// Connect to Hue over Wifi
 WiFiClient client;
 ESPHue myHue = ESPHue(client, HUE_API_KEY, HUE_HOST, 80);
 
+// Set up button and LED pins
 Button button(5); // D1
 
 #define R_led 4   // D2
@@ -17,7 +19,7 @@ Button button(5); // D1
 // modified version of ESPHue::getGroupState()
 // instead of returning state of "on",
 // it returns the state of "any_on"
-// I want this because I want to toggle the lights off if any of them are on
+// I want this because I want to toggle the lights off if *any* of them are on
 int getGroupAnyOn(byte groupNum)
 {
     int groupState = 0;
@@ -34,6 +36,7 @@ int getGroupAnyOn(byte groupNum)
     return groupState;
 }
 
+// Slowly fade the green LED from full brightness to off
 void fadeGreenOff(void)
 {
     int brightness = 255;
@@ -48,45 +51,53 @@ void fadeGreenOff(void)
 }
 
 void setup() {
-
+    // set LEDs are outputs
     pinMode(R_led, OUTPUT);
     pinMode(G_led, OUTPUT);
     pinMode(B_led, OUTPUT);
 
+    // start the button detection
     button.begin();
 
+    // Start the Serial communication
     Serial.begin(115200);
     Serial.println();
     Serial.print("Connecting to ");
     Serial.println(SSID);
 
-    // start connecting
+    // signify that we're starting to connect to WiFi
     digitalWrite(R_led, HIGH);
 
+    // connect to WiFi
     WiFi.begin(SSID, PASSWORD);
 
+    // wait until we're connected
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");
     }
 
+    // print connection status and IP address
     Serial.println("");
     Serial.println("WiFi connected");
     Serial.println("IP address: ");
     Serial.println(WiFi.localIP());
 
-    // connected
+    // Connected to WiFi; turn off red LED
     digitalWrite(R_led, LOW);
 }
 
 void loop() {
+    // when button is pressed...
     if (button.read() == Button::PRESSED)
     {
-        // turn green LED on since button was pressed
+        // turn green LED on
         analogWrite(G_led, 255);
 
         Serial.print("Button Pressed, group state is ");
 
+        // my bulbs are on group 1
+        // get their status
         int groupState = myHue.getGroupState(1);
         Serial.print(groupState);
 
@@ -103,7 +114,7 @@ void loop() {
             Serial.println("... on");
         }
 
-        // fade it off
+        // Lights switched, fade the green LED off
         fadeGreenOff();
     }
 }
