@@ -3,7 +3,7 @@ Switchmate-styled remote to switch Philips Hue lightbulbs
 
 Board: NodeMCU 1.0 (ESP-12E Module)
 
-To set it up for your wifi, rename `wifi-example.h` to `wifi.h` and fill in your SSID and password.
+To communicate with your device, rename `credentials-example.h` to `credentials.h` and fill in your WiFi SSID and password and Philips Hue API Key and IP address.
 
 Need to install some libraries from Arduino Library Manager and other sources.
 
