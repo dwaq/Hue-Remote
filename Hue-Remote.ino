@@ -36,74 +36,74 @@ int getGroupAnyOn(byte groupNum)
 
 void fadeGreenOff(void)
 {
-  int brightness = 255;
+    int brightness = 255;
 
-  while (brightness >= 0)
-  {
-    //Serial.println(brightness);
-    analogWrite(G_led, brightness);
-    brightness -= 5;
-    delay(20);
-  }
+    while (brightness >= 0)
+    {
+        //Serial.println(brightness);
+        analogWrite(G_led, brightness);
+        brightness -= 5;
+        delay(20);
+    }
 }
 
 void setup() {
 
-  pinMode(R_led, OUTPUT);
-  pinMode(G_led, OUTPUT);
-  pinMode(B_led, OUTPUT);
+    pinMode(R_led, OUTPUT);
+    pinMode(G_led, OUTPUT);
+    pinMode(B_led, OUTPUT);
 
-  button.begin();
+    button.begin();
 
-  Serial.begin(115200);
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(SSID);
+    Serial.begin(115200);
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(SSID);
 
-  // start connecting
-  digitalWrite(R_led, HIGH);
+    // start connecting
+    digitalWrite(R_led, HIGH);
 
-  WiFi.begin(SSID, PASSWORD);
+    WiFi.begin(SSID, PASSWORD);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
 
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
 
-  // connected
-  digitalWrite(R_led, LOW);
+    // connected
+    digitalWrite(R_led, LOW);
 }
 
 void loop() {
-  if (button.read() == Button::PRESSED)
-  {
-    // turn green LED on since button was pressed
-    analogWrite(G_led, 255);
+    if (button.read() == Button::PRESSED)
+    {
+        // turn green LED on since button was pressed
+        analogWrite(G_led, 255);
 
-    Serial.print("Button Pressed, group state is ");
+        Serial.print("Button Pressed, group state is ");
 
-    int groupState = myHue.getGroupState(1);
-    Serial.print(groupState);
+        int groupState = myHue.getGroupState(1);
+        Serial.print(groupState);
 
-    // if on,
-    if (groupState == 1){
-      // turn off
-      myHue.setGroupPower(1, myHue.OFF);
-      Serial.println("... off");
+        // if on,
+        if (groupState == 1){
+            // turn off
+            myHue.setGroupPower(1, myHue.OFF);
+            Serial.println("... off");
+        }
+        // if off,
+        else {
+            //turn on
+            myHue.setGroupPower(1, myHue.ON);
+            Serial.println("... on");
+        }
+
+        // fade it off
+        fadeGreenOff();
     }
-    // if off,
-    else {
-      //turn on
-      myHue.setGroupPower(1, myHue.ON);
-      Serial.println("... on");
-    }
-
-    // fade it off
-    fadeGreenOff();
-  }
 }
