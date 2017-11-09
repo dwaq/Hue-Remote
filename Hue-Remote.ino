@@ -135,6 +135,7 @@ void loop()
             Serial.print("failed ... ");
             delay(4000);
             Serial.print("retrying ... ");
+            // could try ESP.reset(); if it doesn't reconnect after a few loops
         }
 
         // red LED off
