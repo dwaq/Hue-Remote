@@ -1,5 +1,4 @@
 #include <WiFiClient.h>
-#include <ESP8266WiFi.h>
 #include <ESPHue.h> 
 #include <Button.h>
 #include "WiFi.h"
