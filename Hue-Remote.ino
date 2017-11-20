@@ -104,7 +104,7 @@ void loop()
 
         // my bulbs are on group 1
         // get their status
-        int groupState = myHue.getGroupState(1);
+        int groupState = getGroupAnyOn(1);
         //Serial.print(groupState);
 
         // if on,
