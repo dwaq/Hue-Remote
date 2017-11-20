@@ -25,13 +25,16 @@ int getGroupAnyOn(byte groupNum)
     int groupState = 0;
     String response = myHue.getGroupInfo(groupNum);
 
-    if (response.indexOf("\"any_on\":false") != -1)
+    // if any of them are on (response found)
+    if (response.indexOf("\"any_on\":true") > 0)
     {
-      groupState = 0;
+        // set state as on
+        groupState = 1;
     }
-    if (response.indexOf("\"any_on\":true") != -1)
+    else
     {
-      groupState = 1;
+        // else, they're all off
+        groupState = 0;
     }
     return groupState;
 }
