@@ -117,8 +117,9 @@ void loop()
         // if off,
         else
         {
-            //turn on
-            myHue.setGroupPower(1, myHue.ON);
+            // turn on to full brightness
+            // (also sets hue and sat to 0, but they aren't supported)
+            myHue.setGroup(1, myHue.ON, 0, 254, 0);
             //Serial.println("... on");
         }
 
