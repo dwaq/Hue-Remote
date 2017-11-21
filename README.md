@@ -1,11 +1,15 @@
 # Hue-Remote
 Switchmate-styled remote to switch Philips Hue lightbulbs
 
-Board: NodeMCU 1.0 (ESP-12E Module)
+First, install these libraries into the Arduino IDE:
+* [The ESP8266 core](https://github.com/esp8266/Arduino#installing-with-boards-manager)
+  * Remember to select NodeMCU 1.0 (ESP-12E Module) as the board after installing
+* [The ESPHue library](https://github.com/tomvanrooij/ESPHue)
+  * [Follow this tutorial](https://www.arduino.cc/en/Guide/Libraries)
+* [The Button library](https://playground.arduino.cc/Code/Button)
+  * Search for "button tiny simple" in the [Arduino Library Manager](https://learn.sparkfun.com/tutorials/installing-an-arduino-library#using-the-library-manager) to find the correct library by Michael Adams
 
-To communicate with your device, rename `credentials-example.h` to `credentials.h` and fill in your WiFi SSID and password and Philips Hue API Key and IP address.
-
-You'll need to install some libraries from Arduino Library Manager and other sources.
+Then, rename `credentials-example.h` to `credentials.h` and fill in your WiFi SSID and password and Philips Hue API Key and IP address to communicate with your device.
 
 ## Enclosure files
 The exported `.stl` files are located in the `models` directory and additional source files can be found on [Thingiverse](https://www.thingiverse.com/thing:2633426).
