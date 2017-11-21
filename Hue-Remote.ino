@@ -107,7 +107,7 @@ void loop()
         int groupState = getGroupAnyOn(1);
         //Serial.print(groupState);
 
-        // if on,
+        // if any on,
         if (groupState == 1)
         {
             // turn off
