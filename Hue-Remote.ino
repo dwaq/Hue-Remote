@@ -9,6 +9,9 @@
 WiFiClient client;
 ESPHue myHue = ESPHue(client, HUE_API_KEY, HUE_HOST, 80);
 
+// control all lights in this group (my bulbs are on group 1)
+#define HUE_GROUP_ID  1
+
 // Set up button and LED pins
 Button button(5); // D1
 
@@ -102,16 +105,15 @@ void loop()
 
         //Serial.print("Button Pressed, group state is ");
 
-        // my bulbs are on group 1
-        // get their status
-        int groupState = getGroupAnyOn(1);
+        // get the status of the lights in this group
+        int groupState = getGroupAnyOn(HUE_GROUP_ID);
         //Serial.print(groupState);
 
         // if any on,
         if (groupState == 1)
         {
             // turn off
-            myHue.setGroupPower(1, myHue.OFF);
+            myHue.setGroupPower(HUE_GROUP_ID, myHue.OFF);
             //Serial.println("... off");
         }
         // if off,
@@ -119,7 +121,7 @@ void loop()
         {
             // turn on to full brightness
             // (also sets hue and sat to 0, but they aren't supported)
-            myHue.setGroup(1, myHue.ON, 0, 254, 0);
+            myHue.setGroup(HUE_GROUP_ID, myHue.ON, 0, 254, 0);
             //Serial.println("... on");
         }
 
