@@ -1,6 +1,8 @@
 # Hue-Remote
 Switchmate-styled remote to switch Philips Hue lightbulbs
 
+Read all about it on my blog: [mylifeasa.tinkerer.us/philips-hue-remote-using-esp8266](https://mylifeasa.tinkerer.us/philips-hue-remote-using-esp8266-6afaf76ac8a8)
+
 First, install these libraries into the Arduino IDE:
 * [The ESP8266 core](https://github.com/esp8266/Arduino#installing-with-boards-manager)
   * Remember to select NodeMCU 1.0 (ESP-12E Module) as the board after installing
