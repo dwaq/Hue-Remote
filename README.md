@@ -4,7 +4,7 @@ Switchmate-styled remote to switch Philips Hue lightbulbs
 First, install these libraries into the Arduino IDE:
 * [The ESP8266 core](https://github.com/esp8266/Arduino#installing-with-boards-manager)
   * Remember to select NodeMCU 1.0 (ESP-12E Module) as the board after installing
-* [The ESPHue library](https://github.com/circuitsforfun/ESP_Hue)
+* [The ESP_Hue library](https://github.com/circuitsforfun/ESP_Hue)
 * [The Button library](https://playground.arduino.cc/Code/Button)
   * Search for "button tiny simple" in the [Arduino Library Manager](https://learn.sparkfun.com/tutorials/installing-an-arduino-library#using-the-library-manager) to find the correct library by Michael Adams
 
