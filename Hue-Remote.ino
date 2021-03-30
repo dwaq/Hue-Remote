@@ -101,7 +101,7 @@ void loop()
     if (button.read() == Button::PRESSED)
     {
         // turn green LED on
-        analogWrite(G_led, 0);
+        digitalWrite(G_led, LOW);
 
         //Serial.print("Button Pressed, group state is ");
 
@@ -125,8 +125,8 @@ void loop()
             //Serial.println("... on");
         }
 
-        // Lights switched, fade the green LED off
-        fadeGreenOff();
+        // Lights switched, turn the green LED off
+        digitalWrite(G_led, HIGH);
     }
 
     // if WiFi disconnects...
