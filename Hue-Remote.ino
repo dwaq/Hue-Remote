@@ -45,13 +45,13 @@ int getGroupAnyOn(byte groupNum)
 // Slowly fade the green LED from full brightness to off
 void fadeGreenOff(void)
 {
-    int brightness = 255;
+    int brightness = 0;
 
-    while (brightness >= 0)
+    while (brightness <= 255)
     {
         //Serial.println(brightness);
         analogWrite(G_led, brightness);
-        brightness -= 5;
+        brightness += 5;
         delay(20);
     }
 }
@@ -73,7 +73,7 @@ void setup()
     //Serial.println(SSID);
 
     // signify that we're starting to connect to WiFi
-    digitalWrite(R_led, HIGH);
+    digitalWrite(R_led, LOW);
 
     // connect to WiFi
     WiFi.begin(SSID, PASSWORD);
@@ -92,7 +92,7 @@ void setup()
     //Serial.println(WiFi.localIP());
 
     // Connected to WiFi; turn off red LED
-    digitalWrite(R_led, LOW);
+    digitalWrite(R_led, HIGH);
 }
 
 void loop()
@@ -101,7 +101,7 @@ void loop()
     if (button.read() == Button::PRESSED)
     {
         // turn green LED on
-        analogWrite(G_led, 255);
+        analogWrite(G_led, 0);
 
         //Serial.print("Button Pressed, group state is ");
 
@@ -133,7 +133,7 @@ void loop()
     if (WiFi.status() != WL_CONNECTED)
     {
         // red LED on
-        digitalWrite(R_led, HIGH);
+        digitalWrite(R_led, LOW);
 
         while (WiFi.begin(SSID, PASSWORD) != WL_CONNECTED)
         {
@@ -145,6 +145,6 @@ void loop()
         }
 
         // red LED off
-        digitalWrite(R_led, LOW);
+        digitalWrite(R_led, HIGH);
     }
 }
